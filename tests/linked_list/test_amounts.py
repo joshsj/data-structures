@@ -1,6 +1,21 @@
 from src.linked_list import LinkedList
 
 
+def test_count_is_correct():
+    # arrange
+    sut = LinkedList()
+    sut.append(1,)
+    sut.append(2)
+    sut.append(2)
+    sut.append(3)
+
+    # act
+    result = sut.count(2)
+
+    # assert
+    assert result == 2
+
+
 def test_len_is_zero_when_empty():
     # arrange
     sut = LinkedList()
