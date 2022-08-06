@@ -1,4 +1,6 @@
 from __future__ import annotations
+from audioop import tostereo
+import enum
 from importlib.metadata import SelectableGroups
 from typing import Callable, Generic, NoReturn, TypeVar
 
@@ -34,6 +36,16 @@ class Node(Generic[T]):
             return None
 
         return node.walk_by(n + n_diff)
+
+    def swap(self, other: Node[T]) -> None:
+        # store other values
+        temp = other.prev, other.next
+
+        # apply self values to other
+        other.prev, other.next = self.prev, self.next
+
+        # apply other values to self
+        self.prev, self.next = temp
 
 
 class IterationNode(Generic[T]):
@@ -116,7 +128,29 @@ class LinkedList(Generic[T]):
         self.__size = 0
 
     def count(self, value: T) -> int:
-        return len([n for n in self if n == value])
+        count = 0
+        for n in self:
+            if n == value:
+                count += 1
+
+        return count
+
+    def reverse(self) -> None:
+        if self.__size < 2:
+            return
+
+        toSwap = self.__head, self.__tail
+
+        # until middle node
+        for _ in range(self.__size//2):
+            # store the next nodes
+            toSwap = toSwap[0].next, toSwap[1].prev
+
+            # retrieve the current nodes
+            Node.swap(toSwap[0].prev, toSwap[1].next)
+
+        # swap pointers
+        self.__head, self.__tail = self.__tail, self.__head
 
     def append(self, value: T) -> None:
         self.insert(self.__size, value)
