@@ -1,4 +1,4 @@
-from linked_list import LinkedList
+from src.linked_list import LinkedList
 
 
 Sut = LinkedList[int]

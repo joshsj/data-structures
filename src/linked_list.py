@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import Callable, Generic, NoReturn, Tuple, TypeVar
+from typing import Callable, Generic, Iterable, List, NoReturn, TypeVar, overload
 
 T = TypeVar("T")
 
@@ -22,6 +22,19 @@ class Node(Generic[T]):
             return self
 
         return self.next.walk_until(predicate) if self.next else None
+
+    def take_until(self, predicate: Callable[[Node[T]], bool]) -> List[Node[T]]:
+        nodes: List[Node[T]] = []
+
+        def move(node: Node[T]) -> List[Node[T]]:
+            if predicate(node) or node.next is None:
+                return nodes
+
+            nodes.append(node)
+
+            return move(node.next)
+
+        return move(self)
 
     def walk_by(self, n: int) -> Node[T] | None:
         if not n:
@@ -58,10 +71,12 @@ class LinkedList(Generic[T]):
     See: https://docs.python.org/3/tutorial/datastructures.html
     """
 
-    def __init__(self) -> None:
+    def __init__(self, items: List[T] = []) -> None:
         self.__head: Node[T] | None = None
         self.__tail: Node[T] | None = None
         self.__size: int = 0
+
+        self.extend(items)
 
     # dunders
 
@@ -76,7 +91,12 @@ class LinkedList(Generic[T]):
 
     # indexing
 
-    def __getitem__(self, i: int | slice) -> T | LinkedList[T] | NoReturn:
+    @overload
+    def __getitem__(self, i: int) -> T: ...
+    @overload
+    def __getitem__(self, i: slice) -> LinkedList[T]: ...
+
+    def __getitem__(self, i: int | slice) -> T | LinkedList[T]:
         return self.__getitem__int(i).value if isinstance(i, int) else self.__getitem__slice(i)
 
     def __getitem__int(self, i: int) -> Node[T] | NoReturn:
@@ -104,15 +124,6 @@ class LinkedList(Generic[T]):
 
     def __setitem__(self, i: int, value: T) -> None:
         self.__getitem__int(i).value = value
-
-    def count(self, value: T) -> int:
-        count = 0
-
-        for n in self:
-            if value == n:
-                count += 1
-
-        return count
 
     # adding
 
@@ -160,8 +171,7 @@ class LinkedList(Generic[T]):
 
     def pop(self, i: int | None = None) -> T:
         node = self.__getitem__int(-1 if i is None else i)
-        self.__remove(node)
-        return node.value
+        return self.__remove(node).value
 
     def remove(self, value: T) -> None:
         if not self.__head:
@@ -174,34 +184,43 @@ class LinkedList(Generic[T]):
 
         self.__remove(node)
 
-    def __remove(self, node: Node[T]) -> None:
-        # point head forwards if needed
-        if node is self.__head:
-            assert self.__head is not None
-            self.__head.prev = None
-            self.__head = self.__head.next
-
-        # point tail backwards if needed
-        elif node is self.__tail:
-            assert self.__tail is not None
-            self.__tail.next = None
-            self.__tail = self.__tail.prev
-
-        # fuggetaboutit
-        else:
-            assert node.next is not None
-            assert node.prev is not None
-            
+    def __remove(self, node: Node[T]) -> Node[T]:
+        if node.prev:
             node.prev.next = node.next
+        else:
+            # node is head
+            self.__head = node.next
+
+        if node.next:
             node.next.prev = node.prev
+        else:
+            # node is tail
+            self.__tail = node.prev
 
         self.__size -= 1
+
+        return node
 
     def clear(self) -> None:
         self.__head = self.__tail = None
         self.__size = 0
 
     # utils
+
+    def extend(self, items: Iterable[T]) -> None:
+        for item in items:
+            self.append(item)
+
+    def count(self, value: T) -> int:
+        count = 0
+
+        for n in self:
+            count += int(value == n)
+
+        return count
+
+    def copy(self) -> LinkedList[T]:
+        return self[:]
 
     def reverse(self) -> None:
         # reversing does nothing
