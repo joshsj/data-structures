@@ -2,7 +2,7 @@ from src.linked_list import LinkedList
 
 
 def main():
-    nums = LinkedList()
+    nums = LinkedList[int]()
 
     nums.append(1)
     nums.append(2)

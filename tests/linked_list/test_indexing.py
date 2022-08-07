@@ -45,3 +45,15 @@ def test_set_with_index_stores_value():
 
     # assert
     assert result == value
+
+
+def test_del_removes_value():
+    # arrange
+    sut: Sut = LinkedList([1, 2, 3])
+
+    # act
+    del sut[1]
+    result = [n for n in sut]
+
+    # assert
+    assert result == [1, 3]

@@ -5,14 +5,16 @@ from . import Sut
 
 @pytest.fixture
 def sut() -> Sut:
+    return LinkedList([1, 2, 3])
+
+
+def test_append_works():
+    # arrange
     sut: Sut = LinkedList()
     sut.append(1)
     sut.append(2)
     sut.append(3)
-    return sut
 
-
-def test_append_works(sut: Sut):
     # act
     result = [n for n in sut]
 
@@ -54,3 +56,15 @@ def test_insert_correct_value_at_end(sut: Sut):
 
     # assert
     assert result == [1, 2, 3, 4]
+
+
+def test_extend_correct_values():
+    # arrange
+    sut: Sut = LinkedList()
+
+    # act
+    sut.extend([1, 2])
+    result = [n for n in sut]
+
+    # assert
+    assert result == [1, 2]

@@ -5,11 +5,7 @@ from . import Sut
 
 @pytest.fixture
 def sut() -> Sut:
-    sut: Sut = LinkedList()
-    sut.append(1)
-    sut.append(2)
-    sut.append(3)
-    return sut
+    return LinkedList([1, 2, 3])
 
 
 def test_remove_correct_value_in_middle(sut: Sut):

@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import Callable, Generic, Iterable, List, NoReturn, TypeVar, overload
+from typing import Callable, Generic, Iterable, Iterator, List, MutableSequence, NoReturn, TypeVar, overload
 
 T = TypeVar("T")
 
@@ -49,22 +49,25 @@ class Node(Generic[T]):
 
 
 class IterationNode(Generic[T]):
-    def __init__(self, node: Node[T] | None) -> None:
-        self.node = node
+    def __init__(self, start: Node[T] | None) -> None:
+        self.current = start
+
+    def __iter__(self) -> Iterator[T]:
+        return self
 
     def __next__(self) -> T | NoReturn:
-        if self.node is None:
+        if self.current is None:
             raise StopIteration
 
-        current_value = self.node.value
+        current_value = self.current.value
 
-        self.node = self.node.next
+        self.current = self.current.next
 
         return current_value
 
 
 # TODO inherit from MutableSequence[T]
-class LinkedList(Generic[T]):
+class LinkedList(MutableSequence[T], Generic[T]):
     """
     Linked List implementation of native list data type
 
@@ -83,7 +86,7 @@ class LinkedList(Generic[T]):
     def __repr__(self) -> str:
         return f"{type(self).__name__}()"
 
-    def __iter__(self) -> IterationNode[T]:
+    def __iter__(self) -> Iterator[T]:
         return IterationNode(self.__head)
 
     def __len__(self) -> int:
@@ -125,12 +128,15 @@ class LinkedList(Generic[T]):
     def __setitem__(self, i: int, value: T) -> None:
         self.__getitem__int(i).value = value
 
+    def __delitem__(self, index: int) -> None:
+        self.pop(index)
+
     # adding
 
     def append(self, value: T) -> None:
         self.insert(self.__size, value)
 
-    def insert(self, i: int, value: T) -> None:
+    def insert(self, index: int, value: T) -> None:
         new = Node(value)
 
         # TODO fix repeated size increment
@@ -138,14 +144,14 @@ class LinkedList(Generic[T]):
             self.__tail = self.__head = new
 
         # start
-        elif not i:
+        elif not index:
             self.__head.prev = new
             new.next = self.__head
 
             self.__head = new
 
         # end
-        elif i == self.__size or i == -1:
+        elif index == self.__size or index == -1:
             assert self.__tail is not None
 
             self.__tail.next = new
@@ -155,7 +161,7 @@ class LinkedList(Generic[T]):
 
         # middle
         else:
-            current = self.__getitem__int(i)
+            current = self.__getitem__int(index)
 
             # insert before current
             new.next = current
@@ -169,8 +175,8 @@ class LinkedList(Generic[T]):
 
     # removing
 
-    def pop(self, i: int | None = None) -> T:
-        node = self.__getitem__int(-1 if i is None else i)
+    def pop(self, index: int | None = None) -> T:
+        node = self.__getitem__int(-1 if index is None else index)
         return self.__remove(node).value
 
     def remove(self, value: T) -> None:
@@ -207,9 +213,9 @@ class LinkedList(Generic[T]):
 
     # utils
 
-    def extend(self, items: Iterable[T]) -> None:
-        for item in items:
-            self.append(item)
+    def extend(self, values: Iterable[T]) -> None:
+        for value in values:
+            self.append(value)
 
     def count(self, value: T) -> int:
         count = 0
