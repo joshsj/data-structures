@@ -1,10 +1,11 @@
 import pytest
 from src.linked_list import LinkedList
+from . import Sut
 
 
 def test_get_with_index_returns_correct_value_when_positive():
     # arrange
-    sut = LinkedList()
+    sut: Sut = LinkedList()
     sut.append(1)
     sut.append(2)
     sut.append(3)
@@ -18,7 +19,7 @@ def test_get_with_index_returns_correct_value_when_positive():
 
 def test_get_with_index_returns_correct_value_when_negative():
     # arrange
-    sut = LinkedList()
+    sut: Sut = LinkedList()
     sut.append(1)
     sut.append(2)
     sut.append(3)
@@ -32,7 +33,7 @@ def test_get_with_index_returns_correct_value_when_negative():
 
 def test_get_with_index_raises_on_bad_index_type():
     # arrange
-    sut = LinkedList()
+    sut: Sut = LinkedList()
 
     # act, assert
     with pytest.raises(TypeError):
@@ -44,7 +45,7 @@ def test_set_with_index_stores_value():
     i = 1
     value = 10
 
-    sut = LinkedList()
+    sut: Sut = LinkedList()
     sut.append(1)
     sut.append(2)
 

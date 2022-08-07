@@ -21,7 +21,7 @@ def nodes() -> Nodes:
     return (left, middle, right)
 
 
-def test_returns_current_node_when_0(nodes: Nodes):
+def test_returns_current_node_when_zero(nodes: Nodes):
     # arrange
     left, *_ = nodes
 

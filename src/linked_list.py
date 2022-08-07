@@ -1,6 +1,5 @@
 from __future__ import annotations
-from importlib.metadata import SelectableGroups
-from typing import Callable, Generic, NoReturn, TypeVar
+from typing import Callable, Generic, NoReturn, Tuple, TypeVar
 
 T = TypeVar("T")
 
@@ -37,7 +36,7 @@ class Node(Generic[T]):
 
 
 class IterationNode(Generic[T]):
-    def __init__(self, node: Node[T]) -> None:
+    def __init__(self, node: Node[T] | None) -> None:
         self.node = node
 
     def __next__(self) -> T | NoReturn:
@@ -64,6 +63,8 @@ class LinkedList(Generic[T]):
         self.__tail: Node[T] | None = None
         self.__size: int = 0
 
+    # dunders
+
     def __repr__(self) -> str:
         return f"{type(self).__name__}()"
 
@@ -73,14 +74,10 @@ class LinkedList(Generic[T]):
     def __len__(self) -> int:
         return self.__size
 
+    # indexing
+
     def __getitem__(self, i: int | slice) -> T | LinkedList[T] | NoReturn:
-        if isinstance(i, int):
-            return self.__getitem__int(i).value
-
-        if isinstance(i, slice):
-            return self.__getitem__slice(i)
-
-        raise TypeError(i)
+        return self.__getitem__int(i).value if isinstance(i, int) else self.__getitem__slice(i)
 
     def __getitem__int(self, i: int) -> Node[T] | NoReturn:
         # TODO add handling to start at tail of closer
@@ -108,15 +105,16 @@ class LinkedList(Generic[T]):
     def __setitem__(self, i: int, value: T) -> None:
         self.__getitem__int(i).value = value
 
-    def size(self) -> int:
-        return self.__size
-
-    def clear(self) -> None:
-        self.__head = self.__tail = None
-        self.__size = 0
-
     def count(self, value: T) -> int:
-        return len([n for n in self if n == value])
+        count = 0
+
+        for n in self:
+            if value == n:
+                count += 1
+
+        return count
+
+    # adding
 
     def append(self, value: T) -> None:
         self.insert(self.__size, value)
@@ -137,6 +135,8 @@ class LinkedList(Generic[T]):
 
         # end
         elif i == self.__size or i == -1:
+            assert self.__tail is not None
+
             self.__tail.next = new
             new.prev = self.__tail
 
@@ -146,13 +146,17 @@ class LinkedList(Generic[T]):
         else:
             current = self.__getitem__int(i)
 
+            # insert before current
             new.next = current
             new.prev = current.prev
 
+            assert current.prev is not None
             current.prev.next = new
             current.prev = new
 
         self.__size += 1
+
+    # removing
 
     def pop(self, i: int | None = None) -> T:
         node = self.__getitem__int(-1 if i is None else i)
@@ -170,20 +174,49 @@ class LinkedList(Generic[T]):
 
         self.__remove(node)
 
-    def __remove(self, node: Node[T]) -> Node[T]:
+    def __remove(self, node: Node[T]) -> None:
         # point head forwards if needed
         if node is self.__head:
-            self.__head = self.__head.next
+            assert self.__head is not None
             self.__head.prev = None
+            self.__head = self.__head.next
 
         # point tail backwards if needed
         elif node is self.__tail:
-            self.__tail = self.__tail.prev
+            assert self.__tail is not None
             self.__tail.next = None
+            self.__tail = self.__tail.prev
 
         # fuggetaboutit
         else:
+            assert node.next is not None
+            assert node.prev is not None
+            
             node.prev.next = node.next
             node.next.prev = node.prev
 
         self.__size -= 1
+
+    def clear(self) -> None:
+        self.__head = self.__tail = None
+        self.__size = 0
+
+    # utils
+
+    def reverse(self) -> None:
+        # reversing does nothing
+        if self.__size in [0, 1]:
+            return
+
+        assert self.__head is not None
+        assert self.__tail is not None
+
+        toSwap = self.__head, self.__tail
+
+        for _ in range(self.__size//2):
+            toSwap[0].value, toSwap[1].value = toSwap[1].value, toSwap[0].value
+
+            assert toSwap[0].next is not None
+            assert toSwap[1].prev is not None
+
+            toSwap = toSwap[0].next, toSwap[1].prev
