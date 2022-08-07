@@ -139,12 +139,11 @@ class LinkedList(MutableSequence[T], Generic[T]):
     def insert(self, index: int, value: T) -> None:
         new = Node(value)
 
-        # TODO fix repeated size increment
         if self.__head is None:
             self.__tail = self.__head = new
 
         # start
-        elif not index:
+        elif index == 0:
             self.__head.prev = new
             new.next = self.__head
 
@@ -176,7 +175,7 @@ class LinkedList(MutableSequence[T], Generic[T]):
     # removing
 
     def pop(self, index: int | None = None) -> T:
-        node = self.__getitem__int(-1 if index is None else index)
+        node = self.__getitem__int(index if index is not None else -1)
         return self.__remove(node).value
 
     def remove(self, value: T) -> None:
