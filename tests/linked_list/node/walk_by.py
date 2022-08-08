@@ -21,7 +21,7 @@ def nodes() -> Nodes:
     return (left, middle, right)
 
 
-def test_returns_current_node_when_zero(nodes: Nodes):
+def returns_current_node_when_zero(nodes: Nodes):
     # arrange
     left, *_ = nodes
 
@@ -32,7 +32,7 @@ def test_returns_current_node_when_zero(nodes: Nodes):
     assert result is left
 
 
-def test_returns_forward_node_when_positive(nodes: Nodes):
+def returns_forward_node_when_positive(nodes: Nodes):
     # arrange
     left, *_, right = nodes
 
@@ -43,7 +43,7 @@ def test_returns_forward_node_when_positive(nodes: Nodes):
     assert result is right
 
 
-def test_returns_backward_node_when_negative(nodes: Nodes):
+def returns_backward_node_when_negative(nodes: Nodes):
     # arrange
     *_, middle, right = nodes
 
@@ -54,7 +54,7 @@ def test_returns_backward_node_when_negative(nodes: Nodes):
     assert result is middle
 
 
-def test_returns_nothing_when_n_too_large(nodes: Nodes):
+def returns_nothing_when_n_too_large(nodes: Nodes):
     # arrange
     left, *_ = nodes
 

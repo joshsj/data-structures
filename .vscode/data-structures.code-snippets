@@ -1,0 +1,17 @@
+{
+  "Test": {
+    "scope": "python",
+    "prefix": ["t", "test", "aaa"],
+    "body": [
+      "def ${1:name}(${2:fixture}):",
+      "    # arrange",
+      "    $0",
+      "    ",
+      "    # act",
+      "    ",
+      "    ",
+      "    # assert",
+      "    "
+    ]
+  }
+}

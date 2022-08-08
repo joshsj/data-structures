@@ -8,7 +8,7 @@ def sut() -> Sut:
     return LinkedList([1, 2, 3])
 
 
-def test_append_works():
+def append_works():
     # arrange
     sut: Sut = LinkedList()
     sut.append(1)
@@ -22,7 +22,7 @@ def test_append_works():
     assert result == [1, 2, 3]
 
 
-def test_insert_correct_value_at_start(sut: Sut):
+def insert_correct_value_at_start(sut: Sut):
     # arrange
     value = 4
 
@@ -34,7 +34,7 @@ def test_insert_correct_value_at_start(sut: Sut):
     assert result == [4, 1, 2, 3]
 
 
-def test_insert_correct_value_in_middle(sut: Sut):
+def insert_correct_value_in_middle(sut: Sut):
     # arrange
     value = 4
 
@@ -46,7 +46,7 @@ def test_insert_correct_value_in_middle(sut: Sut):
     assert result == [1, 2, 4, 3]
 
 
-def test_insert_correct_value_at_end(sut: Sut):
+def insert_correct_value_at_end(sut: Sut):
     # arrange
     value = 4
 
@@ -58,7 +58,7 @@ def test_insert_correct_value_at_end(sut: Sut):
     assert result == [1, 2, 3, 4]
 
 
-def test_extend_correct_values():
+def extend_correct_values():
     # arrange
     sut: Sut = LinkedList()
 

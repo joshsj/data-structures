@@ -2,7 +2,7 @@ from src.linked_list import LinkedList
 from . import Sut
 
 
-def test_evaluates_to_false_when_empty():
+def evaluates_to_false_when_empty():
     # arrange
     sut: Sut = LinkedList()
 
@@ -13,7 +13,7 @@ def test_evaluates_to_false_when_empty():
     assert result == False
 
 
-def test_evaluates_to_true_when_has_items():
+def evaluates_to_true_when_has_items():
     # arrange
     sut: Sut = LinkedList([1])
 
@@ -24,7 +24,7 @@ def test_evaluates_to_true_when_has_items():
     assert result == True
 
 
-def test_count_is_correct():
+def count_is_correct():
     # arrange
     sut: Sut = LinkedList([1, 2, 2, 3])
 
@@ -35,7 +35,7 @@ def test_count_is_correct():
     assert result == 2
 
 
-def test_len_is_zero_when_empty():
+def len_is_zero_when_empty():
     # arrange
     sut: Sut = LinkedList()
 
@@ -46,7 +46,7 @@ def test_len_is_zero_when_empty():
     assert result == 0
 
 
-def test_len_is_correct_when_not_empty():
+def len_is_correct_when_not_empty():
     # arrange
     sut: Sut = LinkedList([1, 2])
 
@@ -57,7 +57,7 @@ def test_len_is_correct_when_not_empty():
     assert result == 2
 
 
-def test_returns_correct_values():
+def returns_correct_values():
     # arrange
     sut: Sut = LinkedList([1, 2, 3])
 

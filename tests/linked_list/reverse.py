@@ -2,7 +2,7 @@ from src.linked_list import LinkedList
 from . import Sut
 
 
-def test_reverse_correct_for_even_length():
+def reverse_correct_for_even_length():
     # arrange
     sut: Sut = LinkedList([1, 2, 3, 4])
 
@@ -14,7 +14,7 @@ def test_reverse_correct_for_even_length():
     assert result == [4, 3, 2, 1]
 
 
-def test_reverse_correct_for_odd_length():
+def reverse_correct_for_odd_length():
     # arrange
     sut: Sut = LinkedList()
     sut.append(1)

@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import Callable, Generic, Iterable, Iterator, List, MutableSequence, NoReturn, TypeVar, overload
+from typing import Callable, Generic, Iterable, Iterator,  MutableSequence, NoReturn, TypeVar, overload
 
 T = TypeVar("T")
 
@@ -7,7 +7,8 @@ T = TypeVar("T")
 class Node(Generic[T]):
     def __init__(
             self,
-            value: T, next_: Node[T] | None = None,
+            value: T,
+            next_: Node[T] | None = None,
             prev: Node[T] | None = None) -> None:
 
         self.value = value
@@ -22,19 +23,6 @@ class Node(Generic[T]):
             return self
 
         return self.next.walk_until(predicate) if self.next else None
-
-    def take_until(self, predicate: Callable[[Node[T]], bool]) -> List[Node[T]]:
-        nodes: List[Node[T]] = []
-
-        def move(node: Node[T]) -> List[Node[T]]:
-            if predicate(node) or node.next is None:
-                return nodes
-
-            nodes.append(node)
-
-            return move(node.next)
-
-        return move(self)
 
     def walk_by(self, n: int) -> Node[T] | None:
         if not n:
@@ -66,7 +54,6 @@ class IterationNode(Generic[T]):
         return current_value
 
 
-# TODO inherit from MutableSequence[T]
 class LinkedList(MutableSequence[T], Generic[T]):
     """
     Linked List implementation of native list data type
@@ -74,7 +61,7 @@ class LinkedList(MutableSequence[T], Generic[T]):
     See: https://docs.python.org/3/tutorial/datastructures.html
     """
 
-    def __init__(self, items: List[T] = []) -> None:
+    def __init__(self, items: Iterable[T] = []) -> None:
         self.__head: Node[T] | None = None
         self.__tail: Node[T] | None = None
         self.__size: int = 0
