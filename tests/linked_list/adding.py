@@ -1,16 +1,15 @@
 import pytest
-from src.linked_list import LinkedList
 from . import Sut
 
 
 @pytest.fixture
 def sut() -> Sut:
-    return LinkedList([1, 2, 3])
+    return Sut([1, 2, 3])
 
 
-def append_works():
+def test_append_works():
     # arrange
-    sut: Sut = LinkedList()
+    sut = Sut()
     sut.append(1)
     sut.append(2)
     sut.append(3)
@@ -22,7 +21,7 @@ def append_works():
     assert result == [1, 2, 3]
 
 
-def insert_correct_value_at_start(sut: Sut):
+def test_insert_correct_value_at_start(sut: Sut):
     # arrange
     value = 4
 
@@ -34,7 +33,7 @@ def insert_correct_value_at_start(sut: Sut):
     assert result == [4, 1, 2, 3]
 
 
-def insert_correct_value_in_middle(sut: Sut):
+def test_insert_correct_value_in_middle(sut: Sut):
     # arrange
     value = 4
 
@@ -46,7 +45,7 @@ def insert_correct_value_in_middle(sut: Sut):
     assert result == [1, 2, 4, 3]
 
 
-def insert_correct_value_at_end(sut: Sut):
+def test_insert_correct_value_at_end(sut: Sut):
     # arrange
     value = 4
 
@@ -58,9 +57,9 @@ def insert_correct_value_at_end(sut: Sut):
     assert result == [1, 2, 3, 4]
 
 
-def extend_correct_values():
+def test_extend_correct_values():
     # arrange
-    sut: Sut = LinkedList()
+    sut = Sut()
 
     # act
     sut.extend([1, 2])

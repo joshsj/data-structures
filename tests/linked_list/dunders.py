@@ -1,10 +1,9 @@
-from src.linked_list import LinkedList
 from . import Sut
 
 
-def evaluates_to_false_when_empty():
+def test_evaluates_to_false_when_empty():
     # arrange
-    sut: Sut = LinkedList()
+    sut = Sut()
 
     # act
     result = bool(sut)
@@ -13,9 +12,9 @@ def evaluates_to_false_when_empty():
     assert result == False
 
 
-def evaluates_to_true_when_has_items():
+def test_evaluates_to_true_when_has_items():
     # arrange
-    sut: Sut = LinkedList([1])
+    sut = Sut([1])
 
     # act
     result = bool(sut)
@@ -24,9 +23,9 @@ def evaluates_to_true_when_has_items():
     assert result == True
 
 
-def count_is_correct():
+def test_count_is_correct():
     # arrange
-    sut: Sut = LinkedList([1, 2, 2, 3])
+    sut = Sut([1, 2, 2, 3])
 
     # act
     result = sut.count(2)
@@ -35,9 +34,9 @@ def count_is_correct():
     assert result == 2
 
 
-def len_is_zero_when_empty():
+def test_len_is_zero_when_empty():
     # arrange
-    sut: Sut = LinkedList()
+    sut = Sut()
 
     # act
     result = len(sut)
@@ -46,9 +45,9 @@ def len_is_zero_when_empty():
     assert result == 0
 
 
-def len_is_correct_when_not_empty():
+def test_len_is_correct_when_not_empty():
     # arrange
-    sut: Sut = LinkedList([1, 2])
+    sut = Sut([1, 2])
 
     # act
     result = len(sut)
@@ -57,9 +56,9 @@ def len_is_correct_when_not_empty():
     assert result == 2
 
 
-def returns_correct_values():
+def test_returns_correct_values():
     # arrange
-    sut: Sut = LinkedList([1, 2, 3])
+    sut = Sut([1, 2, 3])
 
     # act
     result = [n for n in sut]

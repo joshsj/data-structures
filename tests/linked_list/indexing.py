@@ -1,10 +1,9 @@
-from src.linked_list import LinkedList
 from . import Sut
 
 
-def get_with_index_returns_correct_value_when_positive():
+def test_get_with_index_returns_correct_value_when_positive():
     # arrange
-    sut: Sut = LinkedList()
+    sut = Sut()
     sut.append(1)
     sut.append(2)
     sut.append(3)
@@ -16,9 +15,9 @@ def get_with_index_returns_correct_value_when_positive():
     assert result == 2
 
 
-def get_with_index_returns_correct_value_when_negative():
+def test_get_with_index_returns_correct_value_when_negative():
     # arrange
-    sut: Sut = LinkedList()
+    sut = Sut()
     sut.append(1)
     sut.append(2)
     sut.append(3)
@@ -30,12 +29,12 @@ def get_with_index_returns_correct_value_when_negative():
     assert result == 2
 
 
-def set_with_index_stores_value():
+def test_set_with_index_stores_value():
     # arrange
     i = 1
     value = 10
 
-    sut: Sut = LinkedList()
+    sut = Sut()
     sut.append(1)
     sut.append(2)
 
@@ -47,9 +46,9 @@ def set_with_index_stores_value():
     assert result == value
 
 
-def del_removes_value():
+def test_del_removes_value():
     # arrange
-    sut: Sut = LinkedList([1, 2, 3])
+    sut = Sut([1, 2, 3])
 
     # act
     del sut[1]
